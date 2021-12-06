@@ -1,0 +1,108 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+{% if form != None %}
+<h2 class="text-center">{{ title }}</h2>
+<!--<div class="row">-->
+<!--	<div class="col-md-8">-->
+		<section id="loginForm">
+			<form action="." method="post" class="form-horizontal">
+				{% csrf_token %}
+				<h4 class="text-center">{{ message }}</h4>
+				<hr />
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="" class="request__label">С чем возникла проблема?</label>
+							{{ form.requestChoice }}
+						</div>
+						<div class="form-group">
+							<label for="id_username" class="request__label">Краткое описание</label>
+							{{ form.requestTheme }}
+						</div>
+						<div class="form-group">
+							<label for="id_password" class="request__label">Опишите проблему</label>
+							{{ form.requestText }}
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="" class="request__label">Ваш e-mail:</label>
+							{{ form.requestMail }}
+						</div>
+						<div class="form-group">
+							<label for="" class="request__label">Получить ответ на почту?</label>
+							{{ form.requestRadio }}
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group text-center">
+					<input type="submit" value="Отправить" id="b1" class="btn btn-default" />
+				</div>
+
+				{% if form.errors %}
+				<p class="validation-summary-errors">Пожалуйства, введите корректные данные</p>
+				{% endif %}
+			</form>
+		</section>
+<!--	</div>-->
+<!--	<div class="col-md-4">
+		<section id="socialLoginForm"></section>
+	</div>-->
+<!--</div>-->
+{% else %}
+<h2>Ваш отзыв: </h2>
+<p>
+    <span class="request__label">Проблема: </span> {{ data.choice }}
+</p>
+<p>
+    <span class="request__label">Короткое описание: </span> {{ data.theme }}
+</p>
+<p>
+    <span class="request__label">Описание проблемы: </span> {{ data.text }}
+</p>
+<p>
+    <span class="request__label">Ваш e-mail: </span> {{ data.email }}
+</p>
+<p>
+    <span class="request__label">Получить ответ на почту? </span> {{ data.radio }}
+</p>
+
+
+{% endif %}
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script>
+
+        function tcb() {
+            $('#b1').css('color', 'black');
+        };
+
+		function bgw() {
+			$('#id_requestText').css('background-color', 'white');
+		};
+		function tcg() {
+			$('#b1').css('color', '#3bc552');
+        };
+        function bgg() {
+            $('#id_requestText').css('background-color', '#3bc552');
+        };
+
+        $('#b1').mouseover(tcg);
+        $('#b1').mouseout(tcb);
+
+        $('#id_requestText').focus(bgg);
+        $('#id_requestText').blur(bgw);
+
+            
+    </script>
+
+
+    {% load static %}
+<script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
+
+{% endblock %}

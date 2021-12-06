@@ -1,0 +1,114 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}</h2>
+
+
+<div class="wrap">
+    <div class="menu">
+        <div class="mini-menu">
+            <ul>
+                <li class="">
+                    <a href="{% url 'shop' %}">Все товары</a> 
+                </li>
+                <li class="sub">
+                    <a href="#">Настольные игры</a>
+                    <ul>
+                       <li><a href="{% url 'shop' parameter='models' %}">Модельки</a></li>
+                       <li><a href="{% url 'shop' parameter='books' %}">Книги</a></li>
+                       <li><a href="{% url 'shop' parameter='lands' %}">Поля</a></li>
+                       <li><a href="{% url 'shop' parameter='add' %}">Дополнительные детали</a></li>
+                    </ul>
+                </li>
+                <li class="sub">
+                    <a href="#">Атрибутика</a>
+                    <ul>
+                       <li><a href="{% url 'shop' parameter='tshirt' %}">Футболки</a></li>
+                       <li><a href="{% url 'shop' parameter='shirt' %}">Толстовки</a></li>
+                       <li><a href="{% url 'shop' parameter='cosplay' %}">Косплей</a></li>
+                       <li><a href="{% url 'shop' parameter='figurki' %}">Фигурки</a></li>
+                    </ul>
+                </li>
+                
+             </ul>
+        </div>
+        
+    </div>
+
+    <div class="shop-items">
+        
+          <div class="shop-items">
+              {% for item in products %}
+                <a href="{% url 'product' parameter=item.id %}" class="shop-item">
+                    <img class="shop-img img-item" src="{{item.image.url}}" alt="{{item.name}}" />
+                        <div class="info">
+                            <h3 class="shop-h3">{{item.name}}</h3>
+                            <p class="descroption">{{item.desc}}</p>
+                            <h5 class="shop-h5">{{item.price}}$</h5>
+                        </div>
+                </a>
+              {% endfor %}
+          </div>
+        <nav aria-label="...">
+          <ul class="pagination">
+              {% if products.has_previous %}
+                    <li>
+                      <a href="?page={{ products.previous_page_number }}" aria-label="Prev">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                {% else %}
+
+            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+
+                {% endif %}
+              {% for num in products.paginator.page_range %}
+                <li {% if num == products.number %} class="active" {% endif %}><a href="?page={{ num }}">{{ num }}</a></li>
+              {% endfor %}
+            
+             {% if products.has_next %}
+                    <li>
+                      <a href="?page={{ products.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                {% else %}
+                    <li  class="disabled">
+                      <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                {% endif %}
+          </ul>
+        </nav>
+    </div>
+</div>      
+
+{% endblock %}
+
+ {% block scripts %}
+
+ <script type="text/javascript">
+    $(document).ready(function () {
+        $(".sub > a").click(function() {
+            var ul = $(this).next(),
+                    clone = ul.clone().css({"height":"auto"}).appendTo(".mini-menu"),
+                    height = ul.css("height") === "0px" ? ul[0].scrollHeight + "px" : "0px";
+            clone.remove();
+            ul.animate({"height":height});
+            return false;
+        });
+           $('.mini-menu > ul > li > a').click(function(){
+           $('.sub a').removeClass('active');
+           $(this).addClass('active');
+        }),
+           $('.sub ul li a').click(function(){
+           $('.sub ul li a').removeClass('active');
+           $(this).addClass('active');
+        });
+    });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+	<div class="container">
+		<div class="row m-top product-card">
+			<div class="col-md-6">
+				<img class="img" src="{{item.image.url}}" />
+			</div>
+
+			<div class="col-md-6 ">
+				<h2>{{item.name}}</h2>
+				
+				<p class="item_text">{{item.desc}}</p>
+				<div class="d-flex jc-around price-buttons">
+					<button class="btn disabled">{{item.price}}$</button>
+																								
+					<a href="{% url 'add_to_cart' %}?product={{ item.id }}" class="btn btn-success">Добавить в корзину</a>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

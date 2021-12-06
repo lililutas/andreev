@@ -1,0 +1,75 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-9">
+		<div data-cat="history_tiran" >
+			<h2 class="text-center">История Тиранидов</h2>
+			<p class="about__text">Тираниды, также известные как «Великий Пожиратель» — внегалактическая раса пришельцев, единым стремлением которой является поглощение любых форм генетического и биологического материала для своего развития и размножения. Технология тиранидов полностью основана на биологической инженерии. Каждую функцию, любую задачу выполняют живые, специально созданные существа, вместе формирующие флот-улей, управляемый единым Разумом Улья.
+
+Тираниды считаются самой страшной угрозой для всей Галактики. С ними нельзя договориться и их нельзя удержать, единственное, чего они жаждут — поглотить всю органическую жизнь. И самым ужасным является то, что встреченные на данный момент флоты-ульи тиранидов могут оказаться лишь предвестниками основных флотов вторжения, все еще плывущего сквозь пустоту космоса.
+</p>
+		</div>
+		<div data-cat="history_blood" class="hide">
+			<h2 class="text-center">Чем мы занимаемся?</h2>
+			<p class="about__text">Кровавые Ангелы — легион под номером IX из числа первоначальных легионов космодесанта, примарх легиона — Сангвиний. Кровавые Ангелы — один из наиболее древних орденов и отличаются утончённым чувством вкуса.
+
+В бою легион Кровавых Ангелов был воплощением гнева Императора для отвергнувших дар Единства, и их появление зачастую казалось ничем иным, кроме как судом над виновными, вынесенным свыше. Их появление в ещё не приведённых к Согласию человеческих мирах знаменовала блистательная высадка на сильнейшие точки вражеского сопротивления. Спускаясь с небес на огненных крыльях, легион сокрушал врагов сверхъестественной яростью, а также характерной аурой ужаса и трепета. В результате их атак избранные цели очищались от всякой жизни; по свидетельствам очевидцев, целые миры падали на колени, сжимаясь от ужаса пред гневом и великолепием этих «красных ангелов», не желая погибнуть под их пылающими клинками. Впрочем, ксеносам такой милости не оказывалось — при встрече с ними гнев Кровавых Ангелов был подобен приливу неумолимой бойни, затихавшему лишь после полного истребления неприятеля.</div>
+		<div data-cat="goods" class="hide">
+			<h2 class="text-center">Подробнее о продукции</h2>
+			<p class="about__text">Mea no legendos qualisque, in mel utroque offendit accusata. Et munere omnesque mediocrem sed. Est amet vero eu. Hinc convenire ne vim.
+
+Cum et viderer verterem voluptaria, an ipsum debet periculis mel. At qui velit periculis. Ex aperiam prompta vim. Mel praesent forensibus ad.</p>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="category">
+			<h3 class="category__title">О нас</h3>
+			<button class="btn btn-primary d-block" data-filter="history_tiran">История Тиранидов</button>
+			<button class="btn btn-primary d-block" data-filter="history_blood">История кровавых ангелов</button>
+			<button class="btn btn-primary d-block" data-filter="goods">Подробнее о продукции</button>
+		</div>
+
+
+	</div>
+
+
+
+</div>
+
+{% endblock %}
+{% block scripts %}
+
+<script>
+	let filter = $('[data-filter]');
+
+	filter.on('click', function () {
+		let cat = $(this).data('filter');
+		$('[data-filter]').each(function () {
+			let filter_cat = $(this).data('filter');
+			if (filter_cat != cat) {
+				$(this).addClass('btn-primary');
+				$(this).removeClass('btn-success');
+			}
+			else {
+				$(this).addClass('btn-success');
+				$(this).removeClass('btn-primary');
+			}
+		});
+
+		$('[data-cat]').each(function () {
+			let item_cat = $(this).data('cat');
+			if (item_cat != cat) {
+				$(this).addClass('hide');
+			}
+			else {
+				$(this).removeClass('hide');
+			}
+		});
+	});
+
+</script>
+
+
+{% endblock %}
