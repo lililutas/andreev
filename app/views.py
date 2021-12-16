@@ -245,6 +245,7 @@ def cart(request):
         'app/cart.html',
         {
             'title':'Корзина',
+            'status':'cart',
             'items': currentProducts,
             'order': currentOrder,
             'year':datetime.now().year,
@@ -275,19 +276,24 @@ def add_to_cart(request):
     return redirect(reverse('shop'))
 
 
-def total_price(request):
-    current_order, status = Orders.objects.get_or_create(holder=request.user, status='incart')
+def total_price(request, orderId):
+
+    current_order = Orders.objects.get(id = orderId)
     order_list = SubOrders.objects.filter(order=current_order)
     current_order.total_price = 0
     for item in order_list:
         current_order.total_price += item.price
 
     current_order.save()
-    return redirect(reverse('cart'))
+    
+    if current_order.status == 'incart':
+        return redirect(reverse('cart'))
+    else:
+        return redirect(reverse('orderDetails', kwargs={'orderId': orderId}))
 
 def delete_item(request, item):
     current_item = SubOrders.objects.get(id = item).delete()
-    return redirect(reverse('total_price'))
+    return redirect(reverse('total_price', kwargs={'orderId': current_item.order.id}))
 
 def quantity_minus(request):
     current_item = SubOrders.objects.filter(id = request.GET.get('item')).first()
@@ -300,7 +306,7 @@ def quantity_minus(request):
         current_item.price = current_item.product.price * current_item.quantity
         current_item.save()
     
-        return redirect(reverse('total_price'))
+        return redirect(reverse('total_price', kwargs={'orderId': current_item.order.id }))
 
 def quantity_plus(request):
     current_item = SubOrders.objects.filter(id = request.GET.get('item')).first()
@@ -309,7 +315,7 @@ def quantity_plus(request):
     current_item.price = current_item.product.price * current_item.quantity
     current_item.save()
     
-    return redirect(reverse('total_price'))
+    return redirect(reverse('total_price', kwargs={'orderId': current_item.order.id}))
 
 def deal_order(request):
     current_order = Orders.objects.filter(holder=request.user, status='incart').first()
@@ -318,3 +324,51 @@ def deal_order(request):
     
     return redirect(reverse('shop'))
 
+def orders(request):
+    current_orders = Orders.objects.all().exclude(status = 'incart')
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/orders.html',
+        {
+            'status': 'admins',
+            'title':'Заказы',
+            'orders': current_orders,
+            'year':datetime.now().year,
+        }
+    )
+
+def myOrders(request):
+    current_orders = Orders.objects.filter(holder = request.user).exclude(status = 'incart')
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/orders.html',
+        {
+            'status': 'user',
+            'title':'Мои заказы',
+            'orders': current_orders,
+            'year':datetime.now().year,
+        }
+    )
+
+def orderDetails(request, orderId):
+    currentOrder = Orders.objects.get(id = orderId)
+    currentProducts = SubOrders.objects.filter(order = currentOrder)
+
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/cart.html',
+        {
+            'title':'Заказ',
+            'status':'edit',
+            'items': currentProducts,
+            'order': currentOrder,
+            'year':datetime.now().year,
+        }
+    )
+
+def delete_order(request):
+    current_item = Orders.objects.get(id = request.GET.get('order')).delete()
+    return redirect(reverse('shop'))

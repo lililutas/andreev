@@ -38,6 +38,7 @@
     <Compile Include="app\views.py" />
     <Compile Include="app\__init__.py" />
     <Compile Include="app\migrations\__init__.py" />
+    <Compile Include="DjangoWebProject1\context_processors.py" />
     <Compile Include="manage.py" />
     <Compile Include="DjangoWebProject1\__init__.py" />
     <Compile Include="DjangoWebProject1\settings.py" />
@@ -59,10 +60,14 @@
   <ItemGroup>
     <Content Include="app\templates\app\blog.html" />
     <Content Include="app\templates\app\blogpost.html" />
-    <Content Include="app\templates\app\links.html" />
+    <Content Include="app\templates\app\cart.html" />
     <Content Include="app\templates\app\newpost.html" />
+    <Content Include="app\templates\app\orderDetails.html" />
+    <Content Include="app\templates\app\orders.html" />
     <Content Include="app\templates\app\pool.html" />
+    <Content Include="app\templates\app\productPage.html" />
     <Content Include="app\templates\app\registration.html" />
+    <Content Include="app\templates\app\shop.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />

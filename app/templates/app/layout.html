@@ -40,6 +40,12 @@
                     </li>
                     <li><a href="{% url 'blog' %}">Блог</a></li>
                     <li><a href="{% url 'shop' %}">Магазин</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'myOrders' %}">Мои заказы</a></li>
+                    {% if currentUser.role == 'moderator' or currentUser.role == 'admin'%}
+                    <li><a href="{% url 'orders' %}">Заказы</a></li>
+                    {% endif %}
+                    {% endif %}
                     {% if user.is_superuser %}
                     <li><a href="{% url 'newpost' %}">Добавить статью</a></li>
                     {% endif %}
