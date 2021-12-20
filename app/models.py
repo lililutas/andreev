@@ -53,7 +53,7 @@ class Comment(models.Model):
 class UserProfile(models.Model):
 	ROLES = (
 		('client', 'Клиент'),
-		('moder','Модераток'),
+		('moder','Модератор'),
 		('admin','Администратор')
 	)
 
@@ -95,13 +95,15 @@ class Shop(models.Model):
 		('shirt','Толстовки'),
 		('cosplay','Косплей'),
 		('figurki','Фигурки'),
-		
 		)
+
+
 	name = models.CharField(max_length = 300, verbose_name = "Название")
 	category = models.CharField(max_length = 300, verbose_name = 'Категория', choices = CATEGORY)
 	desc = models.TextField(verbose_name = "Описание")
 	price = models.IntegerField(verbose_name = "Цена")
 	side = models.CharField(max_length = 300, choices = SIDES, verbose_name = "Сторона")
+	hasSize = models.BooleanField(verbose_name = 'Имеет размерность?')
 	image = models.FileField(default = 'temp.jpg', verbose_name = 'Путь к картинке')
 
 	class Meta:
@@ -132,11 +134,21 @@ class Orders(models.Model):
 		verbose_name_plural = 'Заказы'
 
 class SubOrders(models.Model):
+	SIZE = (
+		('XS','XS'),
+		('S','S'),
+		('M','M'),
+		('L','L'),
+		('XL','XL'),
+		('none','Не имеет размера'),
+
+		)
+
 	order = models.ForeignKey(Orders, on_delete = models.CASCADE, verbose_name = 'Заказ')
 	product = models.ForeignKey(Shop, on_delete = models.CASCADE, verbose_name = 'Товар')
 	quantity = models.IntegerField(default = 1, verbose_name = 'Количество')
 	price = models.IntegerField(default = 0, verbose_name = 'Стоимость товаров')
-	
+	size = models.CharField(max_length = 100, choices = SIZE, default = 'none', verbose_name = 'Размер одежды')
 
 
 	def __str__(self):

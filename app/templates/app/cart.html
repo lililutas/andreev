@@ -12,6 +12,9 @@
                 
             </div>
 
+
+           
+
             {% for item in items %}
 
             <div class="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded">
@@ -21,8 +24,28 @@
                         <div class="size mr-1"><span class="text-grey">Описание: {{item.product.desc|truncatechars:100}}</span><span class="font-weight-bold">&nbsp;</span></div>
                     </div>
                 </div>
-                <div class="d-flex flex-row align-items-center qty"><a href="{% url 'quantity_minus' %}?item={{item.id}}" class="btn"><span class="glyphicon glyphicon-minus"></span></a>
-                    <h5 class="text-grey mt-1 mr-1 ml-1">{{item.quantity}}</h5><a href="{% url 'quantity_plus' %}?item={{item.id}}" class="btn"><span class="glyphicon glyphicon-plus"></span></a>
+                <div class="d-flex flex-row align-items-center qty">
+                 {% if item.product.hasSize %}
+				<div class="btn-group">
+				  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{{ item.size }} <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu">
+					{% if item.size != 'XS' %}<li><a href="{% url 'changeSize' %}?item={{item.id}}&size=XS">XS</a></li>{% endif %}
+					{% if item.size != 'S' %}<li><a href="{% url 'changeSize' %}?item={{item.id}}&size=S">S</a></li>{% endif %}
+					{% if item.size != 'M' %}<li><a href="{% url 'changeSize' %}?item={{item.id}}&size=M">M</a></li>{% endif %}
+					{% if item.size != 'L' %}<li><a href="{% url 'changeSize' %}?item={{item.id}}&size=L">L</a></li>{% endif %}
+					{% if item.size != 'XL' %}<li><a href="{% url 'changeSize' %}?item={{item.id}}&size=Xl">XL</a></li>{% endif %}
+				  </ul>
+				</div>
+
+
+				{% endif %}    
+                </div>
+                <div class="d-flex flex-row align-items-center qty">
+                    <a href="{% url 'quantity_minus' %}?item={{item.id}}" class="btn"><span class="glyphicon glyphicon-minus"></span></a>
+                    <h5 class="text-grey mt-1 mr-1 ml-1">{{item.quantity}}</h5>
+                    <a href="{% url 'quantity_plus' %}?item={{item.id}}" class="btn"><span class="glyphicon glyphicon-plus"></span></a>
                 </div>
                 <div>
                     <h5 class="text-grey">${{item.product.price}}</h5>

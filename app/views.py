@@ -258,9 +258,10 @@ def add_to_cart(request):
     current_order, status = Orders.objects.get_or_create(holder=request.user, status='incart')
     if status:
         current_order.save()
-    suborder, status = SubOrders.objects.get_or_create(order=current_order, product=current_product)
+    suborder, status = SubOrders.objects.get_or_create(order=current_order, product=current_product, size = request.GET.get('size'))
     if status: 
         suborder.price = suborder.product.price * suborder.quantity
+        suborder.size = request.GET.get('size')
         suborder.save()
     else:
         suborder.quantity += 1
@@ -371,4 +372,21 @@ def orderDetails(request, orderId):
 
 def delete_order(request):
     current_item = Orders.objects.get(id = request.GET.get('order')).delete()
-    return redirect(reverse('shop'))
+    return redirect(reverse('shop'))     
+
+
+def changeSize(request):
+    current_item = SubOrders.objects.get(id = request.GET.get('item'))
+    current_item.size = request.GET.get('size')
+    current_item.save()
+    current_order = current_item.order
+    if current_order.status == 'incart':
+        return redirect(reverse('cart'))
+    else:
+        return redirect(reverse('orderDetails', kwargs={'orderId': orderId}))
+
+def changeStatus(request):
+    current_order = Orders.objects.get(id = request.GET.get('order'))
+    current_order.status = request.GET.get('status')
+    current_order.save()
+    return redirect(reverse('orders'))

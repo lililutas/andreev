@@ -12,10 +12,29 @@
 				<h2>{{item.name}}</h2>
 				
 				<p class="item_text">{{item.desc}}</p>
+				 
 				<div class="d-flex jc-around price-buttons">
+
+
+
 					<button class="btn disabled">{{item.price}}$</button>
-																								
-					<a href="{% url 'add_to_cart' %}?product={{ item.id }}" class="btn btn-success">Добавить в корзину</a>
+					
+					{% if item.hasSize %}
+					<div class="btn-group">
+					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Выбрать размер <span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu">
+						<li><a href="{% url 'add_to_cart' %}?product={{ item.id }}&size=XS">XS</a></li>
+						<li><a href="{% url 'add_to_cart' %}?product={{ item.id }}&size=S">S</a></li>
+						<li><a href="{% url 'add_to_cart' %}?product={{ item.id }}&size=M">M</a></li>
+						<li><a href="{% url 'add_to_cart' %}?product={{ item.id }}&size=L">L</a></li>
+						<li><a href="{% url 'add_to_cart' %}?product={{ item.id }}&size=Xl">XL</a></li>
+					  </ul>
+					</div>
+					{% else %}
+					<a href="{% url 'add_to_cart' %}?product={{ item.id }}&size=none" class="btn btn-success">Добавить в корзину</a>
+					{% endif %}
 				</div>
 				
 			</div>

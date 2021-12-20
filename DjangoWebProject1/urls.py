@@ -50,6 +50,8 @@ urlpatterns = [
     path('myorders/', views.myOrders, name='myOrders'),
     path('orderdetails/<int:orderId>/', views.orderDetails, name='orderDetails'),
     path('deleteorder/', views.delete_order, name='deleteOrder'),
+    path('changeSize/', views.changeSize, name='changeSize'),
+    path('changeStatus/', views.changeStatus, name='changeStatus'),
 
     re_path(r'^(?P<parameter>\d+)/$', views.blogpost, name='blogpost'),
 ]

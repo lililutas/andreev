@@ -14,7 +14,20 @@
 				</div>
 				<div class="{% if status == 'admins' %} col-md-3 {% else %} col-md-4 {% endif %}">
 					<h2>Статус заказа</h2>
-					<h4>{{ order.get_status_display }}</h4>
+					
+					<div class="btn-group">
+					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{ order.get_status_display }} <span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu">
+						{% if order.status != 'check' %}<li><a href="{% url 'changeStatus' %}?order={{order.id}}&status=check">Проверяется</a></li>{% endif %}
+						{% if order.status != 'indeliver' %}<li><a href="{% url 'changeStatus' %}?order={{order.id}}&status=indeliver">Доставляется</a></li>{% endif %}
+						{% if order.status != 'delivered' %}<li><a href="{% url 'changeStatus' %}?order={{order.id}}&status=delivered">Доставлен</a></li>{% endif %}
+					  </ul>
+					</div>
+					
+					
+					
 				</div>
 				<div class="{% if status == 'admins' %} col-md-3 {% else %} col-md-4 {% endif %}">
 					<h2>Стоимость заказа</h2>
